@@ -1,7 +1,7 @@
 const {ipcRenderer} = require('electron')
 let comparedImg
 
-window.moxo = {
+window.abstract = {
   setOpacity (value) {
     comparedImg.style.opacity = value
   },

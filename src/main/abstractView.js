@@ -113,7 +113,7 @@ ipcMain.addListener('updateView', (event, config) => {
       }
       abstractView.setSize(parseInt(width), parseInt(height))
     }
-    abstractView.webContents.executeJavaScript(`moxo.updateView(${config})`)
+    abstractView.webContents.executeJavaScript(`abstract.updateView(${config})`)
   } catch (e) {
     console.log(e)
   }

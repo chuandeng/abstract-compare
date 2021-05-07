@@ -24,7 +24,7 @@ function getIconEl () {
     iconEl.addEventListener('click', (e) =>{
       let icon = getIconEl()
       toDataURL(icon.dataset.img, function(dataUrl) {
-        window.moxo.compareImage(dataUrl)
+        window.abstract.compareImage(dataUrl)
       })
     })
   }
