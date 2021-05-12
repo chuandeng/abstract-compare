@@ -41,14 +41,14 @@
       useMouse,
       onMousedown (e) {
         this.start = e.clientX
+        let {id} = this.value
         const moveFn = (e) => {
           this.move = true
           let end = e.clientX
-          let index = this.index
           let {type, x} = this.value
           x = x + (end - this.start)
           this.$emit('update', {
-            index, type, x
+            id, type, x
           })
           this.start = end
         }

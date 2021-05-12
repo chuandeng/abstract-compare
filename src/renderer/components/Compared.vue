@@ -31,10 +31,9 @@
       <div class="guide-line-box" :style="guidelineStyle">
         <Guideline v-for="(item, index) in guidelines"
                    @update="updateGuideline"
-                   :index="index"
                    @remove="removeGuideline"
                    @keydown="moveGuideline"
-                   :value="item" :key="index"></Guideline>
+                   :value="item" :key="item.id"></Guideline>
 
         <Space v-for="(space, index) in spaces"
                class="space"
@@ -47,10 +46,10 @@
                     :index="index"
                     @remove="removeGuidelineV"
                     @keydown="moveGuidelineV"
-                    :value="item" :key="index"></GuidelineV>
+                    :value="item" :key="item.id"></GuidelineV>
         <SpaceV v-for="(space, index) in spacesV"
                 class="space"
-                :key="'spacev'+index" :space="space"></SpaceV>
+                :key="space.id" :space="space"></SpaceV>
       </div>
       <div v-if="mirror" class="guide-line-box mirror-box" :style="mirrorStyle">
         <div class="mirror-header"
@@ -67,10 +66,10 @@
                     :index="index"
                     @remove="removeGuidelineV"
                     @keydown="moveGuidelineV"
-                    :value="item" :key="index"></GuidelineV>
+                    :value="item" :key="item.id"></GuidelineV>
         <SpaceV v-for="(space, index) in spacesV"
                 class="space"
-                :key="'spacev'+index" :space="space"></SpaceV>
+                :key="space.id" :space="space"></SpaceV>
       </div>
 
     </div>
@@ -213,16 +212,18 @@
       this.$refs.image.focus()
     },
     methods: {
-      updateWidth () {
+      updateWidth (event) {
         let val = this.customWidth
         if (!val || val < 100) {
           alert('The width needs to be greater than 100')
+          this.customWidth = this.width
           return
         }
         let {clientWidth} = document.body
 
         if (val > clientWidth) {
           alert('The width needs to be less than ' + clientWidth)
+          this.customWidth = this.width
           return
         }
         this.width = val
@@ -285,6 +286,7 @@
         }
         x = x + 20
         this.guidelinesV.push({
+          id: +Date.now(),
           type: 'v',
           x
         })
@@ -298,6 +300,7 @@
         }
         y = y + 20
         this.guidelines.push({
+          id: +Date.now(),
           type: 'h',
           y
         })
@@ -308,7 +311,10 @@
       removeGuidelineV (index) {
         this.guidelinesV.splice(index, 1)
       },
-      updateGuidelineV ({x, index}) {
+      updateGuidelineV ({id, x}) {
+        let index = this.guidelinesV.findIndex(item => {
+          return item.id === id
+        })
         let obj = this.guidelinesV[index]
         obj.x = x
         this.guidelinesV = this.guidelinesV.sort((a, b) => {
@@ -319,7 +325,10 @@
           }
         })
       },
-      updateGuideline ({y, index}) {
+      updateGuideline ({y, id}) {
+        let index = this.guidelines.findIndex(item => {
+          return item.id === id
+        })
         let obj = this.guidelines[index]
         obj.y = y
         this.guidelines = this.guidelines.sort((a, b) => {
